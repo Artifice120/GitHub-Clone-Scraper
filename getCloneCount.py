@@ -5,9 +5,7 @@ import requests, json, os.path
 # <count> <timestamp> <uniques>
 # <count> <timestamp> <uniques>
 
-# BE CAREFUL; PLAINTEXT CREDENTIALS!
-username = "username"
-password = "password"
+# repos
 repos = ['VASim', 'ANMLZoo', 'Automata-to-Routing', 'GitHub-Clone-Scraper']
 
 # Class defining the clone information returned by GitHub about each repo
@@ -72,9 +70,11 @@ def writeCloneFile(fn, recordMap):
         f.write(line)
 
 # Retrieves clone info from GitHub as a .json object
+# Add you git token, directions are here https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens 
 def getCloneCounts():
-    url = "https://api.github.com/repos/" + username + "/" + repo + "/traffic/clones"
-    response = requests.get(url, auth=(username,password))
+    url = "https://api.github.com/repos/" + iusername + "/" + repo + "/traffic/clones"
+    headers= {"Authorization": "token <TOKEN_HERE>"}
+    response = requests.get(url, headers=headers)
     return response.json()
 
 # Pretty prints a record
