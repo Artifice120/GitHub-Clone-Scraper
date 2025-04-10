@@ -1,4 +1,9 @@
-import requests, json, os.path
+#!/usr/bin/env python3
+
+import json
+import os.path
+import requests
+# import httpx
 
 # File Format where the first line is totals
 # Counts: <#> Uniques: <#>
@@ -6,9 +11,9 @@ import requests, json, os.path
 # <count> <timestamp> <uniques>
 
 # BE CAREFUL; PLAINTEXT CREDENTIALS!
-username = "username"
-password = "password"
-repos = ['VASim', 'ANMLZoo', 'Automata-to-Routing', 'GitHub-Clone-Scraper']
+iusername = "type in username"
+ipassword = "type in password"
+repos = ['some git repo 1', 'some git repo 2', 'some git repo 3', 'some git repo 4']
 
 # Class defining the clone information returned by GitHub about each repo
 class CloneRecord:
@@ -73,18 +78,19 @@ def writeCloneFile(fn, recordMap):
 
 # Retrieves clone info from GitHub as a .json object
 def getCloneCounts():
-    url = "https://api.github.com/repos/" + username + "/" + repo + "/traffic/clones"
-    response = requests.get(url, auth=(username,password))
+    url = "https://api.github.com/repos/" + iusername + "/" + repo + "/traffic/clones"
+    headers= {"Authorization": " >>>>>>>>>> token PASTE TOKEN HERE <<<<<<<<<<"}
+    response = requests.get(url, headers=headers)
     return response.json()
 
 # Pretty prints a record
 def printRecord(record):
     line = str(record.count) + " " + str(record.timestamp) + " " + str(record.uniques)
-    print line
+    print(line)
 
 # Parses first line in file. Returns tuple of totals
 def parseTotals(line):
-    print line
+    print(line)
     entries = line.split()
     return entries[1],entries[3]
 
@@ -97,43 +103,43 @@ def updateRepo(repo):
     fn = repo + ".txt"
 
     # Read configuration file for repo
-    print "Reading from old file..."
+    print("Reading from old file...")
     readCloneFile(fn, recordMap)
 
     for timestamp, record in recordMap.items():
         printRecord(record)
-        print "---------------------"
+        print("---------------------")
 
-    print "Records: " + str(len(recordMap))
+    print("Records: " + str(len(recordMap)))
 
     # Get data from Github
-    print "Asking Github for data..."
+    print("Asking Github for data...")
     counts = getCloneCounts()
-    print counts
-    print "---------------------"
+    print(counts)
+    print("---------------------")
 
     # Build clone map
-    print "Building data structure from GitHub data..."
+    print("Building data structure from GitHub data...")
     entries = counts["clones"]
     for entry in entries:
         ts = entry["timestamp"]
-        print entry["count"], ts, entry["uniques"]
+        print(entry["count"], ts, entry["uniques"])
         recordMap[ts] = CloneRecord(entry["count"], ts, entry["uniques"])
 
-    print "---------------------"
+    print("---------------------")
 
     # Write clone map to file
-    print "Writing data structure back to file..."
+    print("Writing data structure back to file...")
     writeCloneFile(fn, recordMap)
 
-    print "---------------------"
-    print "DONE"
-    print ""
+    print("---------------------")
+    print("DONE")
+    print("")
 
 #####################################################
 
 for repo in repos:
-    print "************************************************"
-    print "   Updating data for " + repo
-    print "************************************************"
+    print("************************************************")
+    print("   Updating data for " + repo)
+    print("************************************************")
     updateRepo(repo)
