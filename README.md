@@ -10,6 +10,13 @@ The NSF requires that grant recipients report how many times there code has been
 
 Download the code and then set up a "cron" job to run the script every day, few days, week. GitHub seems to keep clone information for two weeks.
 
+> Also In order for this script to work you need to manually go into the scipts and add:
+
+```
+  user name
+  password
+  Git-hub Token ( need to generate a general use token beforehand ) (line 82)
+```
 
 
 
