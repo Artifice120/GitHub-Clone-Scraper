@@ -13,8 +13,8 @@ Download the code and then set up a "cron" job to run the script every day, few 
 > Also In order for this script to work you need to manually go into the scipts and add:
 
 ```
-  user name
-  password
+  user name (line 14)
+  Name of git-repos to scrape ( line 16 )
   Git-hub Token ( need to generate a general use token beforehand ) (line 82)
 ```
 
